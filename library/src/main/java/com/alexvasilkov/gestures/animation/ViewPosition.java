@@ -9,9 +9,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.util.regex.Pattern;
-
 import androidx.annotation.NonNull;
+
+import java.util.regex.Pattern;
 
 /**
  * Helper class to compute and store view position used for transitions.
@@ -63,6 +63,7 @@ public class ViewPosition {
         this.image = image;
     }
 
+    @SuppressWarnings("unused") // Public API
     public void set(@NonNull ViewPosition pos) {
         this.view.set(pos.view);
         this.viewport.set(pos.viewport);
@@ -82,7 +83,7 @@ public class ViewPosition {
 
         tmpViewRect.set(view);
 
-        targetView.getLocationOnScreen(tmpLocation);
+        targetView.getLocationInWindow(tmpLocation);
 
         view.set(0, 0, targetView.getWidth(), targetView.getHeight());
         view.offset(tmpLocation[0], tmpLocation[1]);
@@ -130,6 +131,7 @@ public class ViewPosition {
         return !tmpViewRect.equals(view);
     }
 
+    @NonNull
     public static ViewPosition newInstance() {
         return new ViewPosition();
     }
@@ -141,6 +143,7 @@ public class ViewPosition {
      * @param view View for which we want to get on-screen location
      * @return View position
      */
+    @NonNull
     public static ViewPosition from(@NonNull View view) {
         ViewPosition pos = new ViewPosition();
         pos.init(view);
@@ -178,6 +181,7 @@ public class ViewPosition {
      * @return Serialized position
      * @see #unpack(String)
      */
+    @NonNull
     public String pack() {
         String viewStr = view.flattenToString();
         String viewportStr = viewport.flattenToString();
@@ -195,6 +199,7 @@ public class ViewPosition {
      * @return De-serialized position
      */
     @SuppressWarnings("unused") // Public API
+    @NonNull
     public static ViewPosition unpack(String str) {
         String[] parts = TextUtils.split(str, SPLIT_PATTERN);
         if (parts.length != 4) {
